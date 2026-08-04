@@ -1,17 +1,23 @@
-# Jefferson Property Performance Dashboard
+# The Jefferson Weekly Operations Dashboard
 
-Standalone, public-safe executive dashboard for Jefferson at 3001 East Jefferson Boulevard, South Bend, Indiana.
+Responsive, public-safe operating dashboard for The Jefferson at 3001 East Jefferson Boulevard in South Bend, Indiana.
 
-## Included
+## Dashboard views
 
-- Aggregated compliance metrics from the April 20, 2026 status workbook
-- Asset, operating-target, and market-demand scorecards
-- Browser-local editing and management updates
-- Approved JSON import/export and print/PDF output
-- Responsive mobile and desktop layouts
+- Executive overview
+- Occupancy and 90-day renewals/moveouts
+- Leads, tours, applications, approvals, and executed leases
+- NOI, collections, revenue-per-lease, and delinquency aging
+- Violations, with a clear missing-source-data state and separate work-order proxy
 
-Sensitive case-level information, resident data, addresses, and source attachments are intentionally excluded. No API key or secret is stored in the site.
+The default metrics are derived from `The Jefferson_Weekly_07_31_26(1).xlsx`, dated July 31, 2026. Resident-level, unit-level, and other sensitive source records are excluded.
 
-## Deployment
+## Functionality
 
-The dashboard is a single static `index.html`. Pushes to `main` trigger `.github/workflows/deploy-pages.yml`.
+- Desktop and mobile navigation with hash-addressable tabs
+- Browser-local data updates
+- Approved JSON import/export
+- Print/PDF view
+- No embedded API keys or secrets
+
+The site is a single static `index.html`. Pushes to `main` deploy through `.github/workflows/deploy-pages.yml`.
