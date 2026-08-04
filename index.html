@@ -1,52 +1,744 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b1728">
-<title>Jefferson | Property Performance Dashboard</title>
-<style>
-:root{--navy:#0b1728;--navy2:#173857;--paper:#f3f5f7;--card:#fff;--ink:#132238;--muted:#6f7e90;--line:#dce2e8;--teal:#1f8c82;--tealsoft:#dff3ef;--gold:#d6a84c;--red:#d84f57;--redsoft:#fbe7e9;--shadow:0 12px 32px rgba(14,31,53,.08);--radius:18px}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);background:var(--paper);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.shell{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100vh}.sidebar{position:sticky;top:0;height:100vh;padding:28px 20px;color:#fff;background:linear-gradient(180deg,var(--navy),#0a1d32);display:flex;flex-direction:column;gap:26px}.brand{display:flex;gap:12px;align-items:center}.mark{width:42px;height:42px;border:1px solid #ffffff3d;border-radius:12px;display:grid;place-items:center;color:var(--gold);font-weight:800;background:#ffffff0f}.brand strong{display:block;font-size:17px}.brand span{color:#9eafc4;font-size:10px;letter-spacing:.12em;text-transform:uppercase}.nav{display:grid;gap:8px}.nav button{border:0;border-radius:11px;color:#aebacd;background:transparent;padding:12px 14px;text-align:left}.nav button:hover,.nav button.active{color:#fff;background:#ffffff1a}.nav button.active{box-shadow:inset 3px 0 var(--gold)}.side-note{margin-top:auto;padding:15px;border:1px solid #ffffff1f;border-radius:14px;background:#ffffff0d}.side-note strong{display:block;font-size:12px;margin-bottom:7px}.side-note p{margin:0;color:#9eafc4;font-size:11px;line-height:1.55}
-main{min-width:0;padding:26px 34px 50px}.topbar{display:flex;gap:20px;justify-content:space-between;align-items:center;margin-bottom:24px}.eyebrow{margin:0 0 4px;color:var(--teal);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}h1{margin:0;font-size:clamp(24px,3vw,34px);letter-spacing:-.045em}.subtitle{margin:6px 0 0;color:var(--muted);font-size:13px}.actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}.btn{border:1px solid var(--line);border-radius:10px;padding:10px 13px;background:#fff;color:var(--ink);font-weight:700;font-size:12px}.btn:hover{border-color:#aab6c2}.btn.primary{border-color:var(--navy);background:var(--navy);color:#fff}.btn.active{border-color:var(--gold);background:#fff8e8;color:#7b581a}.view{display:none}.view.active{display:block;animation:lift .25s ease}@keyframes lift{from{opacity:0;transform:translateY(4px)}}
-.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.metric{position:relative;overflow:hidden;min-height:137px;padding:19px;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow)}.metric:after{content:"";position:absolute;width:82px;height:82px;right:-24px;bottom:-28px;border-radius:50%;background:var(--tealsoft)}.metric.critical:after{background:var(--redsoft)}.metric .label{color:var(--muted);font-size:11px;font-weight:750;letter-spacing:.05em;text-transform:uppercase}.metric .value{margin:12px 0 4px;font-size:34px;font-weight:800;letter-spacing:-.05em}.metric .detail{color:var(--muted);font-size:11px}.trend{color:var(--teal);font-weight:800}.critical .trend{color:var(--red)}
-.target{padding:24px;border-radius:var(--radius);color:#fff;background:radial-gradient(circle at 92% 10%,#d6a84c4d,transparent 25%),linear-gradient(125deg,var(--navy),var(--navy2));box-shadow:var(--shadow);margin-bottom:18px}.target-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.target h2{margin:0;font-size:21px}.target p{max-width:690px;color:#b7c5d5;font-size:12px;line-height:1.6}.target-date{color:var(--gold);font-weight:800;white-space:nowrap}.target-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}.target-stat{padding:15px;border:1px solid #ffffff21;border-radius:13px;background:#ffffff0f}.target-stat span{display:block;color:#a9b9ca;font-size:10px;text-transform:uppercase;letter-spacing:.07em}.target-stat strong{display:block;margin-top:7px;font-size:22px}
-.grid-2{display:grid;grid-template-columns:1.16fr .84fr;gap:18px;margin-bottom:18px}.panel{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow);padding:21px}.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:19px}.panel h2{margin:0;font-size:16px;letter-spacing:-.025em}.panel-head p{margin:4px 0 0;color:var(--muted);font-size:11px}.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:99px;background:var(--tealsoft);color:#176a63;font-size:10px;font-weight:800;white-space:nowrap}.pill.red{background:var(--redsoft);color:#a6363d}.pill.gold{background:#fff4dc;color:#8e6417}.dot{width:6px;height:6px;border-radius:50%;background:currentColor}.progress-list{display:grid;gap:18px}.progress-row .copy{display:flex;justify-content:space-between;gap:12px;margin-bottom:8px;font-size:12px;font-weight:700}.progress-row small{color:var(--muted);font-weight:600}.track{height:9px;overflow:hidden;border-radius:99px;background:#edf0f3}.fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--teal),#54b9aa);transition:width .4s}.fill.gold{background:linear-gradient(90deg,#c99837,#e6c16d)}
-.donut-wrap{min-height:206px;display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:center}.donut-box{position:relative;display:grid;place-items:center}.donut{width:146px;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--teal) var(--angle,48.78%),#e7ebef 0)}.donut:after{content:"";width:92px;aspect-ratio:1;border-radius:50%;background:#fff}.donut-label{position:absolute;text-align:center}.donut-label strong{display:block;font-size:25px}.donut-label span{color:var(--muted);font-size:10px}.legend{display:grid;gap:12px}.legend-row{display:flex;justify-content:space-between;gap:12px;font-size:12px}.legend-row span:first-child{color:var(--muted)}.key{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:7px;background:var(--teal)}.key.gray{background:#d9dee4}.key.red{background:var(--red)}
-.market-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.market-card{padding:18px;border:1px solid var(--line);border-radius:14px;background:#fbfcfd}.market-card span{display:block;color:var(--muted);font-size:10px;font-weight:750;text-transform:uppercase;letter-spacing:.07em}.market-card strong{display:block;margin-top:9px;font-size:23px;letter-spacing:-.04em}table{width:100%;border-collapse:collapse}th{padding:11px 10px;border-bottom:1px solid var(--line);color:var(--muted);font-size:10px;text-align:left;text-transform:uppercase;letter-spacing:.06em}td{padding:14px 10px;border-bottom:1px solid #edf0f2;font-size:12px}tr:last-child td{border-bottom:0}.value-cell{font-weight:800}.scope{color:var(--muted);font-size:11px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}label{color:var(--muted);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}input,select,textarea{width:100%;margin-top:6px;border:1px solid var(--line);border-radius:10px;padding:10px 11px;color:var(--ink);background:#fff;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px #1f8c821a}textarea{min-height:90px;resize:vertical}.full{grid-column:1/-1}.update-list{display:grid;gap:9px;margin-top:17px}.update-item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;padding:13px;border:1px solid var(--line);border-radius:12px}.update-item strong{display:block;font-size:12px}.update-item p{margin:5px 0 0;color:var(--muted);font-size:11px;line-height:1.45}.icon-btn{border:0;color:#9a3440;background:var(--redsoft);border-radius:8px;padding:6px 8px;font-size:11px}.empty{color:var(--muted);font-size:12px;text-align:center;padding:20px}.privacy{padding:13px 15px;border:1px solid #b9ded8;border-radius:12px;background:#f0faf8;color:#22645e;font-size:11px;line-height:1.55}.edit-hint{display:none;margin-bottom:14px;padding:11px 14px;border:1px dashed var(--gold);border-radius:12px;background:#fff9ec;color:#73531d;font-size:11px}body.editing .edit-hint{display:block}body.editing [data-edit]{outline:1px dashed var(--gold);outline-offset:3px;border-radius:3px}[data-edit][contenteditable=true]{cursor:text}.toast{position:fixed;right:22px;bottom:22px;z-index:40;opacity:0;transform:translateY(12px);pointer-events:none;padding:11px 14px;border-radius:10px;color:#fff;background:var(--navy);box-shadow:var(--shadow);font-size:12px;transition:.2s}.toast.show{opacity:1;transform:none}.mobile-menu{display:none}
-@media(max-width:1050px){.metric-grid{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}}@media(max-width:760px){.shell{display:block}.sidebar{position:fixed;z-index:30;width:240px;transform:translateX(-100%);transition:.2s}.sidebar.open{transform:none}main{padding:20px 16px 40px}.mobile-menu{display:inline-flex}.topbar{align-items:flex-start}.actions .btn:not(.primary):not(.mobile-menu){display:none}.market-grid,.target-stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:510px){.metric-grid,.market-grid,.target-stats,.form-grid{grid-template-columns:1fr}.donut-wrap{grid-template-columns:1fr}.target-head{display:block}.target-date{display:block;margin-top:12px}}@media print{.sidebar,.actions,.edit-hint,.toast{display:none!important}.shell{display:block}main{padding:0}.view{display:block!important;break-before:page}.view:first-of-type{break-before:auto}.panel,.metric,.target{box-shadow:none;break-inside:avoid}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1728">
+  <title>The Jefferson | Weekly Operations Dashboard</title>
+  <style>
+    :root {
+      --navy: #0b1728;
+      --navy-2: #173857;
+      --paper: #f3f5f7;
+      --card: #ffffff;
+      --ink: #132238;
+      --muted: #6f7e90;
+      --line: #dce2e8;
+      --teal: #1f8c82;
+      --teal-soft: #dff3ef;
+      --gold: #d6a84c;
+      --gold-soft: #fff4dc;
+      --red: #c94752;
+      --red-soft: #fbe7e9;
+      --blue: #3a74a8;
+      --blue-soft: #e4eef7;
+      --shadow: 0 12px 32px rgba(14, 31, 53, .08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible {
+      outline: 3px solid rgba(214, 168, 76, .55);
+      outline-offset: 2px;
+    }
+
+    .shell { display: grid; grid-template-columns: 252px minmax(0, 1fr); min-height: 100vh; }
+    .sidebar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      height: 100vh;
+      padding: 27px 19px 22px;
+      color: #fff;
+      background: linear-gradient(180deg, var(--navy), #0a1d32);
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+    .brand { display: flex; gap: 12px; align-items: center; }
+    .mark {
+      width: 43px;
+      height: 43px;
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      background: rgba(255,255,255,.06);
+      font-weight: 900;
+    }
+    .brand strong { display: block; font-size: 17px; }
+    .brand span { color: #9eafc4; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+    .nav { display: grid; gap: 7px; }
+    .nav button {
+      width: 100%;
+      border: 0;
+      border-radius: 11px;
+      padding: 12px 13px;
+      color: #aebacd;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .nav button:hover, .nav button.active { color: #fff; background: rgba(255,255,255,.1); }
+    .nav button.active { box-shadow: inset 3px 0 var(--gold); }
+    .nav-icon { width: 18px; color: var(--gold); text-align: center; }
+    .side-card {
+      margin-top: auto;
+      padding: 15px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px;
+      background: rgba(255,255,255,.05);
+    }
+    .side-card strong { display: block; margin-bottom: 7px; font-size: 12px; }
+    .side-card p { margin: 0; color: #9eafc4; font-size: 11px; line-height: 1.55; }
+
+    main { min-width: 0; padding: 25px 34px 48px; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 22px;
+      margin-bottom: 22px;
+    }
+    .eyebrow { margin: 0 0 5px; color: var(--teal); font-size: 11px; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(25px, 3vw, 35px); letter-spacing: -.045em; }
+    .subtitle { margin: 7px 0 0; color: var(--muted); font-size: 13px; }
+    .actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 8px; }
+    .btn {
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 9px 13px;
+      color: var(--ink);
+      background: #fff;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .btn:hover { border-color: #aab6c2; transform: translateY(-1px); }
+    .btn.primary { border-color: var(--navy); color: #fff; background: var(--navy); }
+    .btn.danger { color: #9a3440; background: var(--red-soft); border-color: #efc6cb; }
+    .menu-btn { display: none; }
+    .mobile-overlay { display: none; }
+
+    .route { display: none; }
+    .route.active { display: block; animation: lift .2s ease; }
+    @keyframes lift { from { opacity: 0; transform: translateY(4px); } }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 18px; margin: 0 0 16px; }
+    .section-head h2 { margin: 0; font-size: 20px; letter-spacing: -.025em; }
+    .section-head p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+    .as-of { color: #7b581a; background: var(--gold-soft); border-radius: 999px; padding: 7px 10px; font-size: 10px; font-weight: 850; white-space: nowrap; }
+
+    .metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 18px; }
+    .metric {
+      position: relative;
+      overflow: hidden;
+      min-height: 136px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+    .metric::after {
+      content: "";
+      position: absolute;
+      right: -28px;
+      bottom: -30px;
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: var(--teal-soft);
+    }
+    .metric.alert::after { background: var(--red-soft); }
+    .metric.info::after { background: var(--blue-soft); }
+    .metric.gold::after { background: var(--gold-soft); }
+    .metric .label { color: var(--muted); font-size: 10px; font-weight: 850; letter-spacing: .07em; text-transform: uppercase; }
+    .metric .value { margin: 12px 0 4px; font-size: clamp(27px, 3vw, 35px); font-weight: 850; letter-spacing: -.05em; }
+    .metric .detail { position: relative; z-index: 1; color: var(--muted); font-size: 11px; line-height: 1.4; }
+    .metric .trend { color: var(--teal); font-weight: 850; }
+    .metric.alert .trend { color: var(--red); }
+
+    .hero {
+      margin-bottom: 18px;
+      padding: 23px;
+      border-radius: var(--radius);
+      color: #fff;
+      background: radial-gradient(circle at 92% 8%, rgba(214,168,76,.32), transparent 28%), linear-gradient(125deg, var(--navy), var(--navy-2));
+      box-shadow: var(--shadow);
+    }
+    .hero-head { display: flex; justify-content: space-between; gap: 24px; align-items: start; }
+    .hero h2 { margin: 0; font-size: 20px; }
+    .hero p { max-width: 760px; margin: 7px 0 0; color: #b7c5d5; font-size: 12px; line-height: 1.6; }
+    .hero-score { color: var(--gold); font-size: 26px; font-weight: 900; white-space: nowrap; }
+    .hero-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 11px; margin-top: 20px; }
+    .hero-stat { padding: 14px; border: 1px solid rgba(255,255,255,.13); border-radius: 12px; background: rgba(255,255,255,.06); }
+    .hero-stat span { display: block; color: #a9b9ca; font-size: 9px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+    .hero-stat strong { display: block; margin-top: 7px; font-size: 20px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1.12fr .88fr; gap: 18px; margin-bottom: 18px; }
+    .panel { padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; box-shadow: var(--shadow); }
+    .panel-head { display: flex; justify-content: space-between; align-items: start; gap: 15px; margin-bottom: 17px; }
+    .panel h3 { margin: 0; font-size: 16px; letter-spacing: -.02em; }
+    .panel-head p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+    .pill { display: inline-flex; gap: 6px; align-items: center; padding: 6px 9px; border-radius: 999px; color: #176a63; background: var(--teal-soft); font-size: 10px; font-weight: 850; white-space: nowrap; }
+    .pill.red { color: #a6363d; background: var(--red-soft); }
+    .pill.gold { color: #8e6417; background: var(--gold-soft); }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    .progress-list { display: grid; gap: 16px; }
+    .progress-row .copy { display: flex; justify-content: space-between; gap: 13px; margin-bottom: 7px; font-size: 12px; font-weight: 750; }
+    .progress-row small { color: var(--muted); font-weight: 650; }
+    .track { height: 9px; overflow: hidden; border-radius: 999px; background: #edf0f3; }
+    .fill { height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--teal), #54b9aa); transition: width .35s ease; }
+    .fill.gold { background: linear-gradient(90deg, #c99837, #e6c16d); }
+    .fill.red { background: linear-gradient(90deg, #bb3f4a, #df6b74); }
+    .fill.blue { background: linear-gradient(90deg, #3a74a8, #6aa3d5); }
+
+    table { width: 100%; border-collapse: collapse; }
+    th { padding: 10px 9px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 9px; text-align: left; text-transform: uppercase; letter-spacing: .065em; }
+    td { padding: 12px 9px; border-bottom: 1px solid #edf0f2; font-size: 12px; vertical-align: top; }
+    tr:last-child td { border-bottom: 0; }
+    .num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 800; }
+    .status { font-size: 10px; font-weight: 850; }
+    .status.good { color: #176a63; }
+    .status.watch { color: #99661a; }
+    .status.risk { color: #a6363d; }
+    .note {
+      padding: 13px 14px;
+      border: 1px solid #bfded9;
+      border-radius: 12px;
+      color: #285f5b;
+      background: #f0faf8;
+      font-size: 11px;
+      line-height: 1.55;
+    }
+    .note.warn { color: #73531d; border-color: #ecd79e; background: #fff9ec; }
+    .note.red { color: #8d343c; border-color: #efc6cb; background: #fff3f4; }
+    .stack { display: grid; gap: 10px; }
+    .callout-list { display: grid; gap: 10px; }
+    .callout { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: start; padding: 12px; border: 1px solid var(--line); border-radius: 12px; }
+    .callout b { display: grid; place-items: center; width: 28px; height: 28px; color: #176a63; background: var(--teal-soft); border-radius: 8px; font-size: 12px; }
+    .callout strong { display: block; font-size: 12px; }
+    .callout p { margin: 4px 0 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
+    .empty-card { padding: 25px; border: 1px dashed #bcc7d1; border-radius: 14px; text-align: center; background: #fbfcfd; }
+    .empty-card strong { display: block; font-size: 14px; }
+    .empty-card p { max-width: 620px; margin: 7px auto 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
+
+    dialog {
+      width: min(900px, calc(100vw - 32px));
+      max-height: min(86vh, 850px);
+      padding: 0;
+      border: 0;
+      border-radius: 18px;
+      box-shadow: 0 30px 90px rgba(5,17,32,.32);
+      color: var(--ink);
+    }
+    dialog::backdrop { background: rgba(5,17,32,.58); backdrop-filter: blur(3px); }
+    .modal-head { position: sticky; top: 0; z-index: 2; padding: 20px 22px; color: #fff; background: var(--navy); display: flex; justify-content: space-between; gap: 16px; align-items: center; }
+    .modal-head h2 { margin: 0; font-size: 19px; }
+    .modal-head p { margin: 4px 0 0; color: #aebacd; font-size: 11px; }
+    .close-btn { width: 34px; height: 34px; border: 1px solid rgba(255,255,255,.2); border-radius: 9px; color: #fff; background: rgba(255,255,255,.08); font-size: 20px; }
+    .data-form { padding: 21px; }
+    fieldset { margin: 0 0 17px; padding: 16px; border: 1px solid var(--line); border-radius: 13px; }
+    legend { padding: 0 8px; font-size: 12px; font-weight: 850; }
+    .form-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+    label { color: var(--muted); font-size: 9px; font-weight: 850; text-transform: uppercase; letter-spacing: .055em; }
+    input {
+      width: 100%;
+      margin-top: 6px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      color: var(--ink);
+      background: #fff;
+      font-size: 12px;
+    }
+    .modal-actions { position: sticky; bottom: 0; padding: 14px 21px; border-top: 1px solid var(--line); background: rgba(255,255,255,.96); display: flex; justify-content: space-between; gap: 10px; }
+    .modal-actions > div { display: flex; gap: 8px; flex-wrap: wrap; }
+    .toast { position: fixed; right: 22px; bottom: 22px; z-index: 80; opacity: 0; transform: translateY(12px); pointer-events: none; padding: 11px 14px; border-radius: 10px; color: #fff; background: var(--navy); box-shadow: var(--shadow); font-size: 12px; transition: .2s; }
+    .toast.show { opacity: 1; transform: none; }
+
+    @media (max-width: 1100px) {
+      .metric-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .grid-2 { grid-template-columns: 1fr; }
+      .hero-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 780px) {
+      .shell { display: block; }
+      .sidebar { position: fixed; left: 0; width: 252px; transform: translateX(-105%); transition: transform .22s ease; box-shadow: 20px 0 45px rgba(5,17,32,.24); }
+      .sidebar.open { transform: none; }
+      .mobile-overlay { position: fixed; inset: 0; z-index: 20; display: block; opacity: 0; pointer-events: none; border: 0; background: rgba(5,17,32,.45); transition: opacity .2s; }
+      .mobile-overlay.open { opacity: 1; pointer-events: auto; }
+      main { padding: 19px 15px 38px; }
+      .topbar { align-items: start; }
+      .actions .btn.secondary-action { display: none; }
+      .menu-btn { display: inline-flex; }
+      .form-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 520px) {
+      .metric-grid, .hero-grid, .form-grid { grid-template-columns: 1fr; }
+      .topbar { gap: 12px; }
+      .subtitle { font-size: 11px; }
+      .section-head, .hero-head { display: block; }
+      .as-of, .hero-score { display: inline-block; margin-top: 10px; }
+      .panel { padding: 16px; }
+      th, td { padding-left: 6px; padding-right: 6px; }
+      .modal-actions { display: grid; }
+    }
+    @media print {
+      .sidebar, .actions, .toast, .mobile-overlay { display: none !important; }
+      .shell { display: block; }
+      main { padding: 0; }
+      .route { display: block !important; break-before: page; }
+      .route:first-of-type { break-before: auto; }
+      .panel, .metric, .hero { box-shadow: none; break-inside: avoid; }
+    }
+  </style>
 </head>
 <body>
-<div class="shell">
-<aside class="sidebar" id="sidebar"><div class="brand"><div class="mark">J</div><div><strong>Jefferson</strong><span>Property Intelligence</span></div></div><nav class="nav" aria-label="Dashboard navigation"><button class="active" data-view="overview">Overview</button><button data-view="compliance">Compliance</button><button data-view="market">Market & Asset</button><button data-view="updates">Update Center</button></nav><div class="side-note"><strong>Public-safe dashboard</strong><p>Aggregated metrics only. Addresses, resident information, case details, and source records are intentionally excluded.</p></div></aside>
-<main>
-<header class="topbar"><div><p class="eyebrow">Executive dashboard</p><h1 data-edit="dashboardTitle">Jefferson Performance Center</h1><p class="subtitle" data-edit="propertyAddress">3001 East Jefferson Boulevard · South Bend, Indiana</p></div><div class="actions"><button class="btn mobile-menu" id="menuBtn">Menu</button><button class="btn" id="printBtn">Print / PDF</button><button class="btn" id="exportBtn">Export JSON</button><button class="btn primary" id="editBtn">Edit dashboard</button></div></header>
-<div class="edit-hint">Edit mode is active. Click any outlined value to change it; updates save automatically in this browser.</div>
+  <div class="shell">
+    <aside class="sidebar" id="sidebar" aria-label="Dashboard navigation">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">J</div>
+        <div><strong>The Jefferson</strong><span>Weekly operations</span></div>
+      </div>
+      <nav class="nav">
+        <button type="button" data-route="overview"><span class="nav-icon">⌂</span>Executive Overview</button>
+        <button type="button" data-route="occupancy"><span class="nav-icon">▦</span>Occupancy</button>
+        <button type="button" data-route="leads"><span class="nav-icon">◎</span>Leads & Leasing</button>
+        <button type="button" data-route="noi"><span class="nav-icon">$</span>NOI & Collections</button>
+        <button type="button" data-route="violations"><span class="nav-icon">!</span>Violations</button>
+      </nav>
+      <div class="side-card">
+        <strong>Source control</strong>
+        <p>Aggregated from The Jefferson Weekly workbook dated July 31, 2026. Resident-level and unit-level data are excluded.</p>
+      </div>
+    </aside>
+    <button class="mobile-overlay" id="mobileOverlay" type="button" aria-label="Close navigation"></button>
 
-<section class="view active" id="overview">
-<div class="metric-grid"><article class="metric"><div class="label">Compliance items</div><div class="value" data-edit="totalCases">41</div><div class="detail">Source status workbook · Apr 20, 2026</div></article><article class="metric"><div class="label">Completed</div><div class="value" data-edit="completedCases">20</div><div class="detail"><span class="trend" id="completionRate">48.8%</span> of tracked items</div></article><article class="metric critical"><div class="label">Critical flags</div><div class="value" data-edit="criticalFlags">22</div><div class="detail"><span class="trend">Review priority</span> · may overlap statuses</div></article><article class="metric"><div class="label">Property units</div><div class="value" data-edit="propertyUnits">735</div><div class="detail">Across a <span data-edit="siteAcres">50+</span> acre community</div></article></div>
-<article class="target"><div class="target-head"><div><h2>Operating target</h2><p>Reach the occupied-unit and economic-occupancy targets measured from the property-management system and current rent roll.</p></div><span class="target-date" data-edit="targetDate">October 1, 2026</span></div><div class="target-stats"><div class="target-stat"><span>Occupied units</span><strong data-edit="occupiedTarget">662</strong></div><div class="target-stat"><span>Economic occupancy</span><strong><b data-edit="economicTarget">97</b>%</strong></div><div class="target-stat"><span>Physical target</span><strong id="physicalTarget">90.1%</strong></div></div></article>
-<div class="grid-2"><article class="panel"><div class="panel-head"><div><h2>Performance against plan</h2><p>Current aggregate readiness and forward targets</p></div><span class="pill"><span class="dot"></span>Live locally</span></div><div class="progress-list"><div class="progress-row"><div class="copy"><span>Compliance completion</span><small id="completionCopy"></small></div><div class="track"><div class="fill" id="completionBar"></div></div></div><div class="progress-row"><div class="copy"><span>Occupied-unit target</span><small id="occupiedCopy"></small></div><div class="track"><div class="fill gold" id="occupiedBar"></div></div></div><div class="progress-row"><div class="copy"><span>Economic occupancy target</span><small id="economicCopy"></small></div><div class="track"><div class="fill" id="economicBar"></div></div></div></div></article>
-<article class="panel"><div class="panel-head"><div><h2>Compliance pipeline</h2><p>Completed versus open tracking items</p></div><span class="pill red"><span class="dot"></span><span id="flagPill"></span></span></div><div class="donut-wrap"><div class="donut-box"><div class="donut" id="caseDonut"></div><div class="donut-label"><strong id="donutRate"></strong><span>complete</span></div></div><div class="legend"><div class="legend-row"><span><i class="key"></i>Completed</span><strong id="legendCompleted"></strong></div><div class="legend-row"><span><i class="key gray"></i>Open</span><strong id="legendOpen"></strong></div><div class="legend-row"><span><i class="key red"></i>Critical flags</span><strong id="legendFlags"></strong></div></div></div></article></div>
-</section>
+    <main>
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">H&amp;A property intelligence</p>
+          <h1>The Jefferson Command Center</h1>
+          <p class="subtitle">3001 East Jefferson Boulevard · South Bend, Indiana · 735 units</p>
+        </div>
+        <div class="actions">
+          <button class="btn menu-btn" id="menuBtn" type="button" aria-controls="sidebar" aria-expanded="false">Menu</button>
+          <button class="btn secondary-action" id="printBtn" type="button">Print / PDF</button>
+          <button class="btn secondary-action" id="exportBtn" type="button">Export JSON</button>
+          <button class="btn primary" id="editBtn" type="button">Update data</button>
+        </div>
+      </header>
 
-<section class="view" id="compliance"><div class="grid-2"><article class="panel"><div class="panel-head"><div><h2>Compliance scorecard</h2><p>Public summary of the April 20, 2026 source workbook</p></div><span class="pill gold">Aggregate only</span></div><table><thead><tr><th>Metric</th><th>Value</th><th>Use</th></tr></thead><tbody><tr><td>Total tracked items</td><td class="value-cell" data-mirror="totalCases"></td><td class="scope">Portfolio denominator</td></tr><tr><td>Completed items</td><td class="value-cell" data-mirror="completedCases"></td><td class="scope">Closed / verified</td></tr><tr><td>Open items</td><td class="value-cell" id="openCases"></td><td class="scope">Requires continued tracking</td></tr><tr><td>Critical flags</td><td class="value-cell" data-mirror="criticalFlags"></td><td class="scope">Priority indicator; may overlap</td></tr></tbody></table></article><article class="panel"><div class="panel-head"><div><h2>Data-control status</h2><p>How the public deployment handles information</p></div></div><div class="progress-list"><div class="privacy"><strong>Included:</strong> aggregate property, market, target, and compliance counts.</div><div class="privacy"><strong>Excluded:</strong> resident data, addresses, case identifiers, legal details, and source-record attachments.</div><div class="privacy"><strong>Editing:</strong> browser-local by default. Use JSON export/import to move approved aggregate updates.</div></div></article></div><article class="panel"><div class="panel-head"><div><h2>Management interpretation</h2><p>Decision context for the aggregate numbers</p></div></div><p style="margin:0;color:var(--muted);font-size:12px;line-height:1.7" data-edit="complianceNarrative">Twenty of 41 tracked compliance items are recorded as completed. Twenty-one remain open based on the aggregate count. The 22 critical flags are a separate priority indicator and may overlap completed or open records; they should not be added to the pipeline total.</p></article></section>
+      <section class="route" id="overview" aria-labelledby="overviewTitle">
+        <div class="section-head"><div><h2 id="overviewTitle">Executive Overview</h2><p>Weekly operating pulse and items requiring management attention</p></div><span class="as-of">AS OF JUL 31, 2026</span></div>
+        <div class="metric-grid">
+          <article class="metric"><div class="label">Physical occupancy</div><div class="value" id="kpiPhysicalOccupancy">—</div><div class="detail"><span class="trend" id="kpiOccupiedUnits">—</span> occupied units</div></article>
+          <article class="metric alert"><div class="label">Economic occupancy</div><div class="value" id="kpiEconomicOccupancy">—</div><div class="detail"><span class="trend">Cash collections proxy</span></div></article>
+          <article class="metric info"><div class="label">Applications</div><div class="value" id="kpiApplications">—</div><div class="detail"><span class="trend" id="kpiApproved">—</span> approved</div></article>
+          <article class="metric alert"><div class="label">Delinquency</div><div class="value" id="kpiDelinquency">—</div><div class="detail"><span class="trend" id="kpiDelinquencyRate">—</span> of expected rent</div></article>
+        </div>
 
-<section class="view" id="market"><div class="metric-grid"><article class="metric"><div class="label">County population</div><div class="value" data-edit="countyPopulation">272,912</div><div class="detail">Local demand base</div></article><article class="metric"><div class="label">Regional labor force</div><div class="value" data-edit="laborForce">925K</div><div class="detail">Workforce reach</div></article><article class="metric"><div class="label">Average apartment rent</div><div class="value" data-edit="averageRent">$1,406</div><div class="detail">Market reference</div></article><article class="metric"><div class="label">Rent growth</div><div class="value" data-edit="rentGrowth">+7.6%</div><div class="detail">Market momentum</div></article></div><div class="grid-2"><article class="panel"><div class="panel-head"><div><h2>Demand indicators</h2><p>Jefferson investor property overview references</p></div></div><div class="market-grid"><div class="market-card"><span>YTD MSA jobs</span><strong data-edit="msaJobs">+2,675</strong></div><div class="market-card"><span>Renter occupied</span><strong data-edit="renterShare">41%</strong></div><div class="market-card"><span>Education / health jobs</span><strong data-edit="educationHealthJobs">36,925</strong></div><div class="market-card"><span>Hourly wage growth</span><strong data-edit="wageGrowth">+9.2%</strong></div><div class="market-card"><span>Unit mix</span><strong data-edit="unitMix">1 / 2 / 3 BR</strong></div><div class="market-card"><span>Site scale</span><strong><b data-mirror="siteAcres"></b> acres</strong></div></div></article><article class="panel"><div class="panel-head"><div><h2>Asset snapshot</h2><p>High-level public property profile</p></div></div><table><tbody><tr><td>Property</td><td class="value-cell">Jefferson</td></tr><tr><td>Location</td><td class="value-cell">South Bend, Indiana</td></tr><tr><td>Units</td><td class="value-cell" data-mirror="propertyUnits"></td></tr><tr><td>Positioning</td><td class="value-cell" data-edit="positioning">Workforce housing community</td></tr><tr><td>Primary target date</td><td class="value-cell" data-mirror="targetDate"></td></tr></tbody></table></article></div></section>
+        <article class="hero">
+          <div class="hero-head"><div><h2>Weekly management readout</h2><p>The source workbook shows significant leasing and collections pressure. Occupancy is 53.1%, collections equal 23.2% of expected rent, and 342 units are vacant and not rented. The immediate operating priorities are rent-ready conversion, prospect conversion, and delinquency recovery.</p></div><div class="hero-score" id="heroOccupancy">—</div></div>
+          <div class="hero-grid">
+            <div class="hero-stat"><span>Vacant, not rented</span><strong id="heroVacant">—</strong></div>
+            <div class="hero-stat"><span>Rent ready</span><strong id="heroRentReady">—</strong></div>
+            <div class="hero-stat"><span>Inquiries</span><strong id="heroInquiries">—</strong></div>
+            <div class="hero-stat"><span>Open work orders</span><strong id="heroWorkOrders">—</strong></div>
+          </div>
+        </article>
 
-<section class="view" id="updates"><div class="grid-2"><article class="panel"><div class="panel-head"><div><h2>Add management update</h2><p>Saved locally and included in JSON exports</p></div></div><form id="updateForm" class="form-grid"><label>Date<input type="date" id="updateDate" required></label><label>Status<select id="updateStatus"><option>On track</option><option>Attention</option><option>Completed</option><option>Decision needed</option></select></label><label class="full">Title<input id="updateTitle" maxlength="80" placeholder="Monthly compliance refresh" required></label><label class="full">Update<textarea id="updateBody" maxlength="500" placeholder="Add a concise, public-safe management note" required></textarea></label><div class="full"><button class="btn primary" type="submit">Add update</button></div></form></article><article class="panel"><div class="panel-head"><div><h2>Data exchange</h2><p>Move approved changes without exposing credentials</p></div></div><div class="progress-list"><button class="btn" id="downloadBtn">Download dashboard JSON</button><label>Import approved JSON<input type="file" id="importFile" accept="application/json"></label><button class="btn" id="resetBtn">Reset browser data</button><div class="privacy">No OpenAI or other secret key is embedded in this public site. JSON files should contain aggregate, approved information only.</div></div></article></div><article class="panel"><div class="panel-head"><div><h2>Management update log</h2><p>Most recent updates first</p></div><span class="pill" id="updateCount">0 updates</span></div><div class="update-list" id="updateList"></div></article></section>
-</main></div><div class="toast" id="toast" role="status"></div>
-<script>
-(()=>{const KEY='jefferson-dashboard-v1',state={values:{},updates:[]},$=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
-const num=k=>{const v=Number(($(`[data-edit="${k}"]`)?.textContent||'0').replace(/[^0-9.-]/g,''));return Number.isFinite(v)?v:0};
-function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),1800)}
-function calc(){const total=Math.max(0,num('totalCases')),done=Math.min(total||Infinity,Math.max(0,num('completedCases'))),flags=Math.max(0,num('criticalFlags')),units=Math.max(0,num('propertyUnits')),occupied=Math.min(units||Infinity,Math.max(0,num('occupiedTarget'))),economic=Math.min(100,Math.max(0,num('economicTarget'))),pct=total?done/total*100:0,opct=units?occupied/units*100:0,open=Math.max(0,total-done);$('#completionRate').textContent=pct.toFixed(1)+'%';$('#completionCopy').textContent=`${done} of ${total}`;$('#completionBar').style.width=pct+'%';$('#occupiedCopy').textContent=`${occupied} of ${units}`;$('#occupiedBar').style.width=opct+'%';$('#economicCopy').textContent=economic+'%';$('#economicBar').style.width=economic+'%';$('#physicalTarget').textContent=opct.toFixed(1)+'%';$('#donutRate').textContent=Math.round(pct)+'%';$('#caseDonut').style.setProperty('--angle',pct+'%');$('#legendCompleted').textContent=done;$('#legendOpen').textContent=open;$('#legendFlags').textContent=flags;$('#flagPill').textContent=flags+' flags';$('#openCases').textContent=open;$$('[data-mirror]').forEach(e=>{const s=$(`[data-edit="${e.dataset.mirror}"]`);if(s)e.textContent=s.textContent})}
-function save(m='Saved locally'){localStorage.setItem(KEY,JSON.stringify(state));toast(m)}
-function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&typeof s==='object'){state.values=s.values||{};state.updates=Array.isArray(s.updates)?s.updates:[]}}catch(_){}Object.entries(state.values).forEach(([k,v])=>{const e=$(`[data-edit="${k}"]`);if(e)e.textContent=v});calc();render()}
-function editing(on){document.body.classList.toggle('editing',on);$$('[data-edit]').forEach(e=>e.contentEditable=on?'true':'false');$('#editBtn').classList.toggle('active',on);$('#editBtn').textContent=on?'Finish editing':'Edit dashboard';if(!on){$$('[data-edit]').forEach(e=>state.values[e.dataset.edit]=e.textContent.trim());calc();save('Dashboard updated')}}
-function render(){const host=$('#updateList');host.innerHTML='';const items=[...state.updates].sort((a,b)=>String(b.date).localeCompare(String(a.date)));$('#updateCount').textContent=`${items.length} update${items.length===1?'':'s'}`;if(!items.length){host.innerHTML='<div class="empty">No management updates added yet.</div>';return}items.forEach(i=>{const row=document.createElement('div');row.className='update-item';const copy=document.createElement('div'),title=document.createElement('strong'),body=document.createElement('p'),del=document.createElement('button');title.textContent=`${i.title} · ${i.status}`;body.textContent=`${i.date} — ${i.body}`;copy.append(title,body);del.className='icon-btn';del.type='button';del.textContent='Remove';del.onclick=()=>{state.updates=state.updates.filter(u=>u.id!==i.id);save('Update removed');render()};row.append(copy,del);host.append(row)})}
-function download(){$$('[data-edit]').forEach(e=>state.values[e.dataset.edit]=e.textContent.trim());const blob=new Blob([JSON.stringify({version:1,exportedAt:new Date().toISOString(),values:state.values,updates:state.updates},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`jefferson-dashboard-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(a.href);toast('JSON exported')}
-$$('.nav button').forEach(b=>b.onclick=()=>{$$('.nav button').forEach(x=>x.classList.remove('active'));$$('.view').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('#'+b.dataset.view).classList.add('active');$('#sidebar').classList.remove('open')});$('#menuBtn').onclick=()=>$('#sidebar').classList.toggle('open');$('#editBtn').onclick=()=>editing(!document.body.classList.contains('editing'));$('#printBtn').onclick=()=>print();$('#exportBtn').onclick=download;$('#downloadBtn').onclick=download;$('#updateDate').value=new Date().toISOString().slice(0,10);
-$('#updateForm').onsubmit=e=>{e.preventDefault();state.updates.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),date:$('#updateDate').value,status:$('#updateStatus').value,title:$('#updateTitle').value.trim(),body:$('#updateBody').value.trim()});save('Management update added');render();e.target.reset();$('#updateDate').value=new Date().toISOString().slice(0,10)};
-$('#importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const p=JSON.parse(await f.text());if(!p||typeof p.values!=='object'||!Array.isArray(p.updates))throw Error();state.values=p.values;state.updates=p.updates;save('JSON imported');load()}catch(_){toast('Import failed: invalid dashboard JSON')}e.target.value=''};$('#resetBtn').onclick=()=>{if(confirm('Reset all browser-local edits and updates?')){localStorage.removeItem(KEY);location.reload()}};document.addEventListener('input',e=>{if(e.target.matches('[data-edit]')){state.values[e.target.dataset.edit]=e.target.textContent.trim();calc()}});load()})();
-</script></body></html>
+        <div class="grid-2">
+          <article class="panel">
+            <div class="panel-head"><div><h3>Operating funnel</h3><p>Current source totals and conversion points</p></div><span class="pill"><span class="dot"></span>Workbook data</span></div>
+            <div class="progress-list">
+              <div class="progress-row"><div class="copy"><span>Occupancy</span><small id="overviewOccCopy">—</small></div><div class="track"><div class="fill" id="overviewOccBar"></div></div></div>
+              <div class="progress-row"><div class="copy"><span>Applications approved</span><small id="overviewAppCopy">—</small></div><div class="track"><div class="fill blue" id="overviewAppBar"></div></div></div>
+              <div class="progress-row"><div class="copy"><span>Collections against expected rent</span><small id="overviewCollectionCopy">—</small></div><div class="track"><div class="fill red" id="overviewCollectionBar"></div></div></div>
+              <div class="progress-row"><div class="copy"><span>Weekly work orders closed</span><small id="overviewWorkOrderCopy">—</small></div><div class="track"><div class="fill gold" id="overviewWorkOrderBar"></div></div></div>
+            </div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><div><h3>Management priorities</h3><p>Highest-impact next actions based on the weekly report</p></div><span class="pill red"><span class="dot"></span>Action needed</span></div>
+            <div class="callout-list">
+              <div class="callout"><b>1</b><div><strong>Convert rent-ready inventory</strong><p>Prioritize the 11 rent-ready units for immediate leasing while expanding the readiness pipeline from the 342 unrented vacancies.</p></div></div>
+              <div class="callout"><b>2</b><div><strong>Resolve delinquency concentration</strong><p>Validate unit counts and aging detail, then assign collection owners and dates against the $293,623.96 outstanding balance.</p></div></div>
+              <div class="callout"><b>3</b><div><strong>Strengthen funnel reporting</strong><p>Separate tours booked from tours completed and add a violation register so the dashboard can report the requested operating stages.</p></div></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="route" id="occupancy" aria-labelledby="occupancyTitle">
+        <div class="section-head"><div><h2 id="occupancyTitle">Occupancy</h2><p>Current status mix, rent-ready inventory, and 90-day renewal/moveout view</p></div><span class="as-of">735 TOTAL UNITS</span></div>
+        <div class="metric-grid">
+          <article class="metric"><div class="label">Occupied</div><div class="value" id="occOccupied">—</div><div class="detail" id="occOccupiedDetail">—</div></article>
+          <article class="metric info"><div class="label">Leased</div><div class="value" id="occLeased">—</div><div class="detail">Reported separately from occupied</div></article>
+          <article class="metric alert"><div class="label">Vacant, not rented</div><div class="value" id="occVacant">—</div><div class="detail" id="occVacantDetail">—</div></article>
+          <article class="metric gold"><div class="label">Vacant, rent ready</div><div class="value" id="occRentReady">—</div><div class="detail" id="occRentReadyDetail">—</div></article>
+        </div>
+        <div class="grid-2">
+          <article class="panel">
+            <div class="panel-head"><div><h3>Occupancy status</h3><p>Portfolio-level counts from the weekly scorecard</p></div><span class="pill" id="occRatePill">—</span></div>
+            <div class="progress-list">
+              <div class="progress-row"><div class="copy"><span>Occupied</span><small id="occBarOccupiedCopy">—</small></div><div class="track"><div class="fill" id="occBarOccupied"></div></div></div>
+              <div class="progress-row"><div class="copy"><span>Leased / pending occupancy</span><small id="occBarLeasedCopy">—</small></div><div class="track"><div class="fill blue" id="occBarLeased"></div></div></div>
+              <div class="progress-row"><div class="copy"><span>Vacant, not rented</span><small id="occBarVacantCopy">—</small></div><div class="track"><div class="fill red" id="occBarVacant"></div></div></div>
+              <div class="progress-row"><div class="copy"><span>Rent ready</span><small id="occBarReadyCopy">—</small></div><div class="track"><div class="fill gold" id="occBarReady"></div></div></div>
+            </div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><div><h3>Upcoming 90 days</h3><p>August–October renewal and movement outlook</p></div><span class="pill gold">Forward view</span></div>
+            <table>
+              <thead><tr><th>Metric</th><th class="num">Count</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Lease expirations</td><td class="num" id="occRenewals90">—</td><td class="status watch">13 identified</td></tr>
+                <tr><td>Renewals completed</td><td class="num" id="occRenewed90">—</td><td class="status good">Workbook-confirmed</td></tr>
+                <tr><td>Remaining renewal decisions</td><td class="num" id="occRenewalRemaining">—</td><td class="status risk">Follow-up required</td></tr>
+                <tr><td>Scheduled move-ins</td><td class="num" id="occMoveIns90">—</td><td class="status good">Weekly look-ahead</td></tr>
+                <tr><td>Scheduled move-outs</td><td class="num" id="occMoveOuts90">—</td><td class="status watch">Weekly look-ahead</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </div>
+        <div class="note warn">Source reconciliation note: the unit-type table reports 362 occupied and 371 vacant across 733 units, while the portfolio summary reports 390 occupied across 735 units. This dashboard uses the portfolio summary for headline occupancy and flags the mismatch for correction in the next workbook.</div>
+      </section>
+
+      <section class="route" id="leads" aria-labelledby="leadsTitle">
+        <div class="section-head"><div><h2 id="leadsTitle">Leads &amp; Leasing</h2><p>Inquiry sources, tours, applications, approvals, and executed leases</p></div><span class="as-of">WEEK ENDING JUL 31</span></div>
+        <div class="metric-grid">
+          <article class="metric info"><div class="label">Inquiries</div><div class="value" id="leadInquiries">—</div><div class="detail">22 calls + 7 emails</div></article>
+          <article class="metric"><div class="label">Tours recorded</div><div class="value" id="leadTours">—</div><div class="detail">Booked/completed split not provided</div></article>
+          <article class="metric gold"><div class="label">Applications submitted</div><div class="value" id="leadApplications">—</div><div class="detail"><span class="trend" id="leadApprovalRate">—</span> approved</div></article>
+          <article class="metric"><div class="label">Executed leases</div><div class="value" id="leadExecuted">—</div><div class="detail" id="leadExecutedDetail">—</div></article>
+        </div>
+        <div class="grid-2">
+          <article class="panel">
+            <div class="panel-head"><div><h3>Inquiry source performance</h3><p>Only sources with reported activity are counted</p></div><span class="pill"><span class="dot"></span>29 inquiries</span></div>
+            <table>
+              <thead><tr><th>Source</th><th>Type</th><th class="num">Inquiries</th><th class="num">Tours</th></tr></thead>
+              <tbody>
+                <tr><td>RentVision</td><td>Online</td><td class="num">7</td><td class="num">2</td></tr>
+                <tr><td>Walk-in / drive-by / phone</td><td>Direct</td><td class="num">22</td><td class="num">2</td></tr>
+                <tr><td>ApartmentGuide.com</td><td>Online</td><td class="num">—</td><td class="num">—</td></tr>
+                <tr><td>Zillow.com</td><td>Online</td><td class="num">—</td><td class="num">—</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><div><h3>Conversion funnel</h3><p>Known stages from the weekly source</p></div><span class="pill gold">Stage tracking</span></div>
+            <div class="progress-list">
+              <div class="progress-row"><div class="copy"><span>Applications / inquiries</span><small id="leadAppCopy">—</small></div><div class="track"><div class="fill blue" id="leadAppBar"></div></div></div>
+              <div class="progress-row"><div class="copy"><span>Approvals / applications</span><small id="leadApprovalCopy">—</small></div><div class="track"><div class="fill" id="leadApprovalBar"></div></div></div>
+              <div class="progress-row"><div class="copy"><span>Executed leases / approvals</span><small id="leadLeaseCopy">—</small></div><div class="track"><div class="fill gold" id="leadLeaseBar"></div></div></div>
+            </div>
+            <div class="note warn" style="margin-top:16px">The workbook records 4 tours but does not distinguish tours booked from tours completed. Both fields are included in the data editor and will appear once management supplies the split.</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="route" id="noi" aria-labelledby="noiTitle">
+        <div class="section-head"><div><h2 id="noiTitle">NOI &amp; Collections</h2><p>Revenue, collection performance, executed lease economics, and delinquency aging</p></div><span class="as-of">JULY 2026</span></div>
+        <div class="metric-grid">
+          <article class="metric alert"><div class="label">Economic occupancy</div><div class="value" id="noiEconomicOccupancy">—</div><div class="detail">Collection-rate proxy</div></article>
+          <article class="metric"><div class="label">Avg. executed lease</div><div class="value" id="noiAverageLease">—</div><div class="detail">3 reported lease rents</div></article>
+          <article class="metric info"><div class="label">Collections MTD</div><div class="value" id="noiCollections">—</div><div class="detail" id="noiExpectedDetail">—</div></article>
+          <article class="metric alert"><div class="label">Delinquency</div><div class="value" id="noiDelinquency">—</div><div class="detail">Unit count not provided</div></article>
+        </div>
+        <div class="grid-2">
+          <article class="panel">
+            <div class="panel-head"><div><h3>Collections against expected rent</h3><p>Cash received compared with July expected rent</p></div><span class="pill red" id="noiGapPill">—</span></div>
+            <div class="progress-list">
+              <div class="progress-row"><div class="copy"><span>Collected cash</span><small id="noiCollectionCopy">—</small></div><div class="track"><div class="fill red" id="noiCollectionBar"></div></div></div>
+              <div class="progress-row"><div class="copy"><span>Delinquent balance</span><small id="noiDelinquencyCopy">—</small></div><div class="track"><div class="fill gold" id="noiDelinquencyBar"></div></div></div>
+            </div>
+            <div class="note warn" style="margin-top:16px">“Economic occupancy” is shown as collected cash divided by expected rent because the workbook does not provide gross potential rent, concessions, write-offs, or vacancy loss needed for a standard economic-occupancy calculation.</div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><div><h3>Delinquency aging</h3><p>Reconciled to the $293,623.96 aggregate balance</p></div><span class="pill red">97.5% current bucket</span></div>
+            <table>
+              <thead><tr><th>Age</th><th class="num">Balance</th><th class="num">Share</th></tr></thead>
+              <tbody>
+                <tr><td>0–30 days</td><td class="num">$286,156.06</td><td class="num">97.5%</td></tr>
+                <tr><td>31–60 days</td><td class="num">$7,467.90</td><td class="num">2.5%</td></tr>
+                <tr><td>61–90 days</td><td class="num">$0.00</td><td class="num">0.0%</td></tr>
+                <tr><td>Over 90 days</td><td class="num">$0.00</td><td class="num">0.0%</td></tr>
+                <tr><td><strong>Total</strong></td><td class="num"><strong>$293,623.96</strong></td><td class="num"><strong>100%</strong></td></tr>
+              </tbody>
+            </table>
+          </article>
+        </div>
+        <article class="panel">
+          <div class="panel-head"><div><h3>Revenue reference points</h3><p>Portfolio pricing and executed leases reported in the source workbook</p></div><span class="pill">Source-derived</span></div>
+          <table>
+            <thead><tr><th>Measure</th><th class="num">Value</th><th>Interpretation</th></tr></thead>
+            <tbody>
+              <tr><td>Portfolio scheduled monthly rent</td><td class="num" id="noiScheduledRent">—</td><td>Pricing summary total across 735 units</td></tr>
+              <tr><td>Scheduled rent per unit</td><td class="num" id="noiRentPerUnit">—</td><td>Portfolio scheduled rent ÷ total units</td></tr>
+              <tr><td>Average executed lease</td><td class="num" id="noiAvgLeaseTable">—</td><td>Average of $1,079, $929, and $969</td></tr>
+              <tr><td>Average scheduled rent / SF</td><td class="num">$1.41</td><td>Weighted source-workbook average</td></tr>
+            </tbody>
+          </table>
+        </article>
+      </section>
+
+      <section class="route" id="violations" aria-labelledby="violationsTitle">
+        <div class="section-head"><div><h2 id="violationsTitle">Violations</h2><p>Outstanding, in-progress, and completed violation tracking</p></div><span class="as-of">AWAITING SOURCE REGISTER</span></div>
+        <div class="metric-grid">
+          <article class="metric alert"><div class="label">Outstanding</div><div class="value" id="vioOutstanding">—</div><div class="detail">No count in weekly workbook</div></article>
+          <article class="metric gold"><div class="label">In progress</div><div class="value" id="vioInProgress">—</div><div class="detail">No count in weekly workbook</div></article>
+          <article class="metric"><div class="label">Completed</div><div class="value" id="vioCompleted">—</div><div class="detail">No count in weekly workbook</div></article>
+          <article class="metric info"><div class="label">Open work orders</div><div class="value" id="vioOpenWorkOrders">—</div><div class="detail">Operational proxy—not violations</div></article>
+        </div>
+        <div class="grid-2">
+          <article class="panel">
+            <div class="panel-head"><div><h3>Violation register status</h3><p>Data-quality gate</p></div><span class="pill red"><span class="dot"></span>Source missing</span></div>
+            <div class="empty-card"><strong>No violation-level dataset was included</strong><p>The July 31 weekly workbook does not contain violation type, unit/location, opened date, responsible owner, due date, stage, or completion date. Counts remain blank until management adds them through “Update data” or imports an approved JSON refresh.</p></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><div><h3>Available operational proxy</h3><p>Weekly work-order flow from the source workbook</p></div><span class="pill gold">Not a violation count</span></div>
+            <table>
+              <thead><tr><th>Work orders</th><th class="num">Count</th></tr></thead>
+              <tbody>
+                <tr><td>New this week</td><td class="num" id="vioWorkOrdersNew">—</td></tr>
+                <tr><td>Closed this week</td><td class="num" id="vioWorkOrdersClosed">—</td></tr>
+                <tr><td>Total open</td><td class="num" id="vioWorkOrdersOpen">—</td></tr>
+              </tbody>
+            </table>
+            <div class="note red" style="margin-top:15px">Work orders should not be treated as municipal, code, life-safety, or lease violations without a separate validated source.</div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="dataDialog" aria-labelledby="dialogTitle">
+    <div class="modal-head"><div><h2 id="dialogTitle">Update dashboard data</h2><p>Changes save in this browser and can be moved by JSON export/import.</p></div><button class="close-btn" id="closeDialogBtn" type="button" aria-label="Close">×</button></div>
+    <form class="data-form" id="dataForm">
+      <fieldset><legend>Occupancy</legend><div class="form-grid">
+        <label>Total units<input name="portfolioUnits" type="number" min="0"></label>
+        <label>Occupied<input name="occupied" type="number" min="0"></label>
+        <label>Leased<input name="leased" type="number" min="0"></label>
+        <label>Vacant, not rented<input name="vacantNotRented" type="number" min="0"></label>
+        <label>Rent ready<input name="rentReady" type="number" min="0"></label>
+        <label>Notice to vacate<input name="noticeToVacate" type="number" min="0"></label>
+        <label>90-day expirations<input name="renewals90" type="number" min="0"></label>
+        <label>90-day renewals<input name="renewed90" type="number" min="0"></label>
+        <label>Remaining decisions<input name="renewalRemaining90" type="number" min="0"></label>
+        <label>Scheduled move-ins<input name="moveIns90" type="number" min="0"></label>
+        <label>Scheduled move-outs<input name="moveOuts90" type="number" min="0"></label>
+      </div></fieldset>
+      <fieldset><legend>Leads &amp; leasing</legend><div class="form-grid">
+        <label>Inquiries<input name="inquiries" type="number" min="0"></label>
+        <label>Tours recorded<input name="toursRecorded" type="number" min="0"></label>
+        <label>Tours booked<input name="toursBooked" type="number" min="0" placeholder="Not tracked"></label>
+        <label>Tours completed<input name="toursCompleted" type="number" min="0" placeholder="Not tracked"></label>
+        <label>Applications submitted<input name="applicationsSubmitted" type="number" min="0"></label>
+        <label>Applications approved<input name="applicationsApproved" type="number" min="0"></label>
+        <label>Applications pending<input name="applicationsPending" type="number" min="0"></label>
+        <label>New leases executed<input name="executedNew" type="number" min="0"></label>
+        <label>Renewals executed<input name="executedRenewal" type="number" min="0"></label>
+      </div></fieldset>
+      <fieldset><legend>NOI &amp; collections</legend><div class="form-grid">
+        <label>Expected rent ($)<input name="expectedRent" type="number" min="0" step="0.01"></label>
+        <label>Collections MTD ($)<input name="collectionsMtd" type="number" min="0" step="0.01"></label>
+        <label>Delinquency ($)<input name="delinquencyTotal" type="number" min="0" step="0.01"></label>
+        <label>Delinquent units<input name="delinquentUnits" type="number" min="0" placeholder="Not tracked"></label>
+        <label>Avg. executed lease ($)<input name="averageExecutedLease" type="number" min="0" step="0.01"></label>
+        <label>Scheduled monthly rent ($)<input name="scheduledMonthlyRent" type="number" min="0" step="0.01"></label>
+      </div></fieldset>
+      <fieldset><legend>Violations &amp; work orders</legend><div class="form-grid">
+        <label>Violations outstanding<input name="violationsOutstanding" type="number" min="0" placeholder="Not tracked"></label>
+        <label>Violations in progress<input name="violationsInProgress" type="number" min="0" placeholder="Not tracked"></label>
+        <label>Violations completed<input name="violationsCompleted" type="number" min="0" placeholder="Not tracked"></label>
+        <label>Work orders new<input name="workOrdersNew" type="number" min="0"></label>
+        <label>Work orders closed<input name="workOrdersClosed" type="number" min="0"></label>
+        <label>Work orders open<input name="workOrdersOpen" type="number" min="0"></label>
+      </div></fieldset>
+      <input id="importFile" type="file" accept="application/json" hidden>
+      <div class="modal-actions"><div><button class="btn" id="importBtn" type="button">Import JSON</button><button class="btn danger" id="resetBtn" type="button">Reset to workbook</button></div><div><button class="btn" id="cancelDialogBtn" type="button">Cancel</button><button class="btn primary" type="submit">Save dashboard</button></div></div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      const STORAGE_KEY = 'jefferson-weekly-dashboard-v2';
+      const DEFAULTS = Object.freeze({
+        sourceDate: '2026-07-31', portfolioUnits: 735, occupied: 390, leased: 5,
+        vacantNotRented: 342, rentReady: 11, noticeToVacate: 3,
+        renewals90: 13, renewed90: 3, renewalRemaining90: 10, moveIns90: 2, moveOuts90: 6,
+        inquiries: 29, toursRecorded: 4, toursBooked: null, toursCompleted: null,
+        applicationsSubmitted: 15, applicationsApproved: 10, applicationsPending: 5,
+        executedNew: 3, executedRenewal: 4,
+        expectedRent: 382312.35, collectionsMtd: 88688.39, delinquencyTotal: 293623.96,
+        delinquentUnits: null, averageExecutedLease: 992.33, scheduledMonthlyRent: 902100,
+        violationsOutstanding: null, violationsInProgress: null, violationsCompleted: null,
+        workOrdersNew: 29, workOrdersClosed: 18, workOrdersOpen: 11
+      });
+
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+      let state = loadState();
+
+      function loadState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          return saved && typeof saved === 'object' ? { ...DEFAULTS, ...saved } : { ...DEFAULTS };
+        } catch (_) { return { ...DEFAULTS }; }
+      }
+      function persist(message) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        if (message) toast(message);
+      }
+      function n(value) { const number = Number(value); return Number.isFinite(number) ? number : 0; }
+      function ratio(a, b) { return n(b) > 0 ? n(a) / n(b) : 0; }
+      function count(value) { return value === null || value === '' || value === undefined ? '—' : Math.round(n(value)).toLocaleString('en-US'); }
+      function money(value, compact = false) {
+        if (value === null || value === '' || value === undefined) return '—';
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: compact ? 0 : 2, minimumFractionDigits: compact ? 0 : 2 }).format(n(value));
+      }
+      function percent(value, decimals = 1) { return `${(n(value) * 100).toFixed(decimals)}%`; }
+      function setText(id, value) { const el = document.getElementById(id); if (el) el.textContent = value; }
+      function setBar(id, value) { const el = document.getElementById(id); if (el) el.style.width = `${Math.max(0, Math.min(100, n(value) * 100))}%`; }
+      function toast(message) {
+        const el = $('#toast');
+        el.textContent = message;
+        el.classList.add('show');
+        clearTimeout(toast.timer);
+        toast.timer = setTimeout(() => el.classList.remove('show'), 1800);
+      }
+
+      function render() {
+        const occRate = ratio(state.occupied, state.portfolioUnits);
+        const economic = ratio(state.collectionsMtd, state.expectedRent);
+        const delinquencyRate = ratio(state.delinquencyTotal, state.expectedRent);
+        const approvalRate = ratio(state.applicationsApproved, state.applicationsSubmitted);
+        const executed = n(state.executedNew) + n(state.executedRenewal);
+        const workOrderCloseRate = ratio(state.workOrdersClosed, state.workOrdersNew);
+        const appInquiryRate = ratio(state.applicationsSubmitted, state.inquiries);
+        const leaseApprovalRate = ratio(executed, state.applicationsApproved);
+
+        setText('kpiPhysicalOccupancy', percent(occRate));
+        setText('kpiEconomicOccupancy', percent(economic));
+        setText('kpiOccupiedUnits', count(state.occupied));
+        setText('kpiApplications', count(state.applicationsSubmitted));
+        setText('kpiApproved', count(state.applicationsApproved));
+        setText('kpiDelinquency', money(state.delinquencyTotal, true));
+        setText('kpiDelinquencyRate', percent(delinquencyRate));
+        setText('heroOccupancy', percent(occRate));
+        setText('heroVacant', count(state.vacantNotRented));
+        setText('heroRentReady', count(state.rentReady));
+        setText('heroInquiries', count(state.inquiries));
+        setText('heroWorkOrders', count(state.workOrdersOpen));
+
+        setText('overviewOccCopy', `${count(state.occupied)} of ${count(state.portfolioUnits)}`); setBar('overviewOccBar', occRate);
+        setText('overviewAppCopy', `${count(state.applicationsApproved)} of ${count(state.applicationsSubmitted)}`); setBar('overviewAppBar', approvalRate);
+        setText('overviewCollectionCopy', `${money(state.collectionsMtd, true)} of ${money(state.expectedRent, true)}`); setBar('overviewCollectionBar', economic);
+        setText('overviewWorkOrderCopy', `${count(state.workOrdersClosed)} of ${count(state.workOrdersNew)}`); setBar('overviewWorkOrderBar', workOrderCloseRate);
+
+        setText('occOccupied', count(state.occupied)); setText('occOccupiedDetail', `${percent(occRate)} physical occupancy`);
+        setText('occLeased', count(state.leased));
+        setText('occVacant', count(state.vacantNotRented)); setText('occVacantDetail', `${percent(ratio(state.vacantNotRented, state.portfolioUnits))} of units`);
+        setText('occRentReady', count(state.rentReady)); setText('occRentReadyDetail', `${percent(ratio(state.rentReady, state.vacantNotRented))} of unrented vacancies`);
+        setText('occRatePill', `${percent(occRate)} occupied`);
+        setText('occBarOccupiedCopy', count(state.occupied)); setBar('occBarOccupied', occRate);
+        setText('occBarLeasedCopy', count(state.leased)); setBar('occBarLeased', ratio(state.leased, state.portfolioUnits));
+        setText('occBarVacantCopy', count(state.vacantNotRented)); setBar('occBarVacant', ratio(state.vacantNotRented, state.portfolioUnits));
+        setText('occBarReadyCopy', count(state.rentReady)); setBar('occBarReady', ratio(state.rentReady, state.portfolioUnits));
+        setText('occRenewals90', count(state.renewals90)); setText('occRenewed90', count(state.renewed90)); setText('occRenewalRemaining', count(state.renewalRemaining90));
+        setText('occMoveIns90', count(state.moveIns90)); setText('occMoveOuts90', count(state.moveOuts90));
+
+        setText('leadInquiries', count(state.inquiries)); setText('leadTours', count(state.toursRecorded));
+        setText('leadApplications', count(state.applicationsSubmitted)); setText('leadApprovalRate', percent(approvalRate));
+        setText('leadExecuted', count(executed)); setText('leadExecutedDetail', `${count(state.executedNew)} new + ${count(state.executedRenewal)} renewals`);
+        setText('leadAppCopy', `${count(state.applicationsSubmitted)} of ${count(state.inquiries)}`); setBar('leadAppBar', appInquiryRate);
+        setText('leadApprovalCopy', `${count(state.applicationsApproved)} of ${count(state.applicationsSubmitted)}`); setBar('leadApprovalBar', approvalRate);
+        setText('leadLeaseCopy', `${count(executed)} of ${count(state.applicationsApproved)}`); setBar('leadLeaseBar', leaseApprovalRate);
+
+        setText('noiEconomicOccupancy', percent(economic)); setText('noiAverageLease', money(state.averageExecutedLease, true));
+        setText('noiCollections', money(state.collectionsMtd, true)); setText('noiExpectedDetail', `${money(state.expectedRent, true)} expected rent`);
+        setText('noiDelinquency', money(state.delinquencyTotal, true)); setText('noiGapPill', `${percent(delinquencyRate)} delinquent`);
+        setText('noiCollectionCopy', `${money(state.collectionsMtd)} / ${money(state.expectedRent)}`); setBar('noiCollectionBar', economic);
+        setText('noiDelinquencyCopy', money(state.delinquencyTotal)); setBar('noiDelinquencyBar', delinquencyRate);
+        setText('noiScheduledRent', money(state.scheduledMonthlyRent));
+        setText('noiRentPerUnit', money(ratio(state.scheduledMonthlyRent, state.portfolioUnits)));
+        setText('noiAvgLeaseTable', money(state.averageExecutedLease));
+
+        setText('vioOutstanding', count(state.violationsOutstanding)); setText('vioInProgress', count(state.violationsInProgress)); setText('vioCompleted', count(state.violationsCompleted));
+        setText('vioOpenWorkOrders', count(state.workOrdersOpen)); setText('vioWorkOrdersNew', count(state.workOrdersNew)); setText('vioWorkOrdersClosed', count(state.workOrdersClosed)); setText('vioWorkOrdersOpen', count(state.workOrdersOpen));
+      }
+
+      function routeTo(route, updateHash = true) {
+        const valid = $(`#${route}.route`) ? route : 'overview';
+        $$('.route').forEach(section => section.classList.toggle('active', section.id === valid));
+        $$('.nav button').forEach(button => {
+          const active = button.dataset.route === valid;
+          button.classList.toggle('active', active);
+          if (active) button.setAttribute('aria-current', 'page'); else button.removeAttribute('aria-current');
+        });
+        if (updateHash && location.hash !== `#${valid}`) history.replaceState(null, '', `#${valid}`);
+        closeMenu();
+        document.title = `The Jefferson | ${$('.nav button.active')?.textContent.trim() || 'Dashboard'}`;
+      }
+      function openMenu() { $('#sidebar').classList.add('open'); $('#mobileOverlay').classList.add('open'); $('#menuBtn').setAttribute('aria-expanded', 'true'); }
+      function closeMenu() { $('#sidebar').classList.remove('open'); $('#mobileOverlay').classList.remove('open'); $('#menuBtn').setAttribute('aria-expanded', 'false'); }
+      function populateForm() {
+        const form = $('#dataForm');
+        $$('input[name]', form).forEach(input => { const value = state[input.name]; input.value = value === null || value === undefined ? '' : value; });
+      }
+      function openDialog() { populateForm(); $('#dataDialog').showModal(); }
+      function closeDialog() { $('#dataDialog').close(); }
+      function exportJson() {
+        const payload = { schema: 'jefferson-weekly-dashboard-v2', exportedAt: new Date().toISOString(), source: 'The Jefferson_Weekly_07_31_26(1).xlsx', data: state };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob); link.download = `jefferson-dashboard-${new Date().toISOString().slice(0,10)}.json`; link.click();
+        setTimeout(() => URL.revokeObjectURL(link.href), 0); toast('Dashboard JSON exported');
+      }
+      async function importJson(file) {
+        try {
+          const payload = JSON.parse(await file.text());
+          const data = payload && payload.data && typeof payload.data === 'object' ? payload.data : payload;
+          if (!data || typeof data !== 'object') throw new Error('Invalid file');
+          const allowed = Object.keys(DEFAULTS);
+          state = { ...DEFAULTS, ...Object.fromEntries(Object.entries(data).filter(([key]) => allowed.includes(key))) };
+          persist('Dashboard JSON imported'); render(); populateForm();
+        } catch (_) { toast('Import failed: invalid dashboard JSON'); }
+      }
+
+      $$('.nav button').forEach(button => button.addEventListener('click', () => routeTo(button.dataset.route)));
+      $('#menuBtn').addEventListener('click', openMenu); $('#mobileOverlay').addEventListener('click', closeMenu);
+      $('#editBtn').addEventListener('click', openDialog); $('#closeDialogBtn').addEventListener('click', closeDialog); $('#cancelDialogBtn').addEventListener('click', closeDialog);
+      $('#printBtn').addEventListener('click', () => window.print()); $('#exportBtn').addEventListener('click', exportJson);
+      $('#importBtn').addEventListener('click', () => $('#importFile').click());
+      $('#importFile').addEventListener('change', event => { const file = event.target.files[0]; if (file) importJson(file); event.target.value = ''; });
+      $('#resetBtn').addEventListener('click', () => {
+        if (confirm('Reset all browser-local changes to the July 31, 2026 workbook values?')) { state = { ...DEFAULTS }; localStorage.removeItem(STORAGE_KEY); render(); populateForm(); toast('Workbook values restored'); }
+      });
+      $('#dataForm').addEventListener('submit', event => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        Object.keys(DEFAULTS).forEach(key => {
+          if (!data.has(key)) return;
+          const raw = data.get(key);
+          state[key] = raw === '' ? null : Number(raw);
+        });
+        persist('Dashboard data saved'); render(); closeDialog();
+      });
+      window.addEventListener('hashchange', () => routeTo(location.hash.slice(1), false));
+      document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
+
+      render();
+      routeTo(location.hash.slice(1) || 'overview', false);
+    })();
+  </script>
+</body>
+</html>
